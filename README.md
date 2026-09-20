@@ -182,6 +182,3 @@ Push to `main` to redeploy.
 
 ---
 
-## License / hackathon
-
-Built as a frontend storytelling hackathon project. Dataset is included for demos; handle personal-finance–style data carefully if you fork.
