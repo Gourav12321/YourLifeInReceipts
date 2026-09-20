@@ -32,6 +32,7 @@ npm run build
 npm start
 ```
 
-## Deploy
+## Live
 
-Deployed on Vercel from the `main` branch of this repository.
+- GitHub: https://github.com/Gourav12321/YourLifeInReceipts
+- Vercel: https://web-teal-two-93.vercel.app
