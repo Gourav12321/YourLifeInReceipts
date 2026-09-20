@@ -110,18 +110,21 @@ Helpers in `src/lib/data.ts` map a selected moment/ritual → constellation and 
 
 ```
 src/
-  app/                 # Next.js App Router (page, layout, styles)
+  app/                 # Next.js App Router (page, layout, loading, styles)
   components/
     acts/              # Story acts (Opening, Rewind, Rituals, Sky, Letter, …)
-    AppShell.tsx       # Chrome, back button, bottom tabs
+    AppShell.tsx       # Chrome, skip-link, back, bottom tabs
     Cassette.tsx       # Tape UI + play cues
     JukeboxView.tsx
     PocketView.tsx
     ReceiptCard.tsx
     SpotifyPlayer.tsx
+  hooks/               # Client hooks (now-playing / mute)
   data/                # Static datasets (committed)
   lib/                 # Types + data accessors / journey helpers
 ```
+
+See also [ARCHITECTURE.md](./ARCHITECTURE.md) and [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ---
 

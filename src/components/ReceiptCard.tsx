@@ -20,7 +20,7 @@ export function ReceiptCard({
   return (
     <article
       className={`paper relative ${tear} ${
-        wide ? "w-full max-w-xl" : "w-full max-w-[360px]"
+        wide ? "w-full max-w-xl" : "w-full max-w-[min(100%,360px)]"
       } mx-auto px-5 pt-5 pb-8 ${className}`}
       style={style}
     >

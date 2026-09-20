@@ -227,3 +227,123 @@ body {
   background: rgba(255, 255, 255, 0.15);
   border-radius: 99px;
 }
+
+/* —— Responsive layout (explicit breakpoints for mobile → desktop) —— */
+html {
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+.shell-pad {
+  padding-left: max(0.75rem, env(safe-area-inset-left));
+  padding-right: max(0.75rem, env(safe-area-inset-right));
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+}
+
+.touch-target {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+@media (max-width: 639px) {
+  .paper {
+    box-shadow:
+      0 12px 28px rgba(0, 0, 0, 0.4),
+      0 2px 0 rgba(255, 255, 255, 0.3) inset;
+  }
+
+  .anim-fade-up {
+    animation-duration: 0.45s;
+  }
+
+  .dots {
+    background-size: 14px 14px;
+  }
+
+  .nav-label {
+    font-size: 9px;
+    letter-spacing: 0.02em;
+  }
+}
+
+@media (min-width: 640px) {
+  .shell-pad {
+    padding-left: max(1.5rem, env(safe-area-inset-left));
+    padding-right: max(1.5rem, env(safe-area-inset-right));
+  }
+
+  .dots {
+    background-size: 18px 18px;
+  }
+}
+
+@media (min-width: 768px) {
+  .paper {
+    box-shadow:
+      0 20px 48px rgba(0, 0, 0, 0.45),
+      0 2px 0 rgba(255, 255, 255, 0.35) inset;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sky-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) 300px;
+    gap: 1rem;
+    align-items: start;
+  }
+}
+
+@media (max-width: 1023px) {
+  .sky-split {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .anim-fade-up {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .touch-target {
+    min-width: 48px;
+    min-height: 48px;
+  }
+}
+
+@media print {
+  .desk-surface,
+  .desk-cold,
+  .desk-sky {
+    background: white;
+  }
+
+  nav,
+  header button {
+    display: none !important;
+  }
+}
+

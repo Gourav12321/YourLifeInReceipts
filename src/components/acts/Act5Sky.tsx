@@ -335,7 +335,7 @@ export function Act5Sky({ found, onFind, onPlay, onToLetter, focusId }: Props) {
       </div>
 
       {/* Left sky + right detail */}
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.35fr)_300px] lg:items-start">
+      <div className="sky-split">
         <div className="min-w-0 space-y-2">
           <div
             ref={skyRef}

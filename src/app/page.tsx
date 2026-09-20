@@ -1,23 +1,48 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useCallback, useMemo, useState } from "react";
 import { AppShell } from "@/components/AppShell";
 import { SpotifyPlayer } from "@/components/SpotifyPlayer";
 import { Act0LastReceipt } from "@/components/acts/Act0LastReceipt";
 import { Act1Rewind } from "@/components/acts/Act1Rewind";
 import { Act4Rituals } from "@/components/acts/Act4Rituals";
-import { Act5Sky } from "@/components/acts/Act5Sky";
 import { Act6Letter } from "@/components/acts/Act6Letter";
-import { JukeboxView } from "@/components/JukeboxView";
-import { PocketView } from "@/components/PocketView";
+import { useNowPlaying } from "@/hooks/useNowPlaying";
 import { constellationForMoment } from "@/lib/data";
 import type { TabId } from "@/lib/types";
 
-type PlayState = {
-  uri: string;
-  title: string;
-  artist: string;
-} | null;
+const Act5Sky = dynamic(
+  () =>
+    import("@/components/acts/Act5Sky").then((m) => m.Act5Sky),
+  {
+    ssr: false,
+    loading: () => (
+      <p className="py-16 text-center font-[family-name:var(--font-mono)] text-sm text-white/40">
+        Looking up at the sky…
+      </p>
+    ),
+  },
+);
+
+const JukeboxView = dynamic(
+  () =>
+    import("@/components/JukeboxView").then((m) => m.JukeboxView),
+  {
+    ssr: false,
+    loading: () => (
+      <p className="py-16 text-center font-[family-name:var(--font-mono)] text-sm text-white/40">
+        Warming the jukebox…
+      </p>
+    ),
+  },
+);
+
+const PocketView = dynamic(
+  () =>
+    import("@/components/PocketView").then((m) => m.PocketView),
+  { ssr: false },
+);
 
 /** Story acts: 0 opening, 1 rewind, 4 rituals, 5 sky, 6 letter */
 const ACT_TAG: Record<number, string> = {
@@ -31,15 +56,9 @@ const ACT_TAG: Record<number, string> = {
 export default function HomePage() {
   const [tab, setTab] = useState<TabId>("paper");
   const [act, setAct] = useState(0);
-  const [muted, setMuted] = useState(false);
-  const [play, setPlay] = useState<PlayState>(null);
   const [found, setFound] = useState<Set<string>>(() => new Set());
   const [skyFocus, setSkyFocus] = useState<string | null>(null);
-
-  const onPlay = useCallback((uri: string, title: string, artist: string) => {
-    setMuted(false);
-    setPlay({ uri, title, artist });
-  }, []);
+  const { play, muted, onPlay, toggleMute, clearPlay } = useNowPlaying();
 
   const onFind = useCallback((id: string) => {
     setFound((prev) => {
@@ -50,7 +69,6 @@ export default function HomePage() {
     });
   }, []);
 
-  // Sky lives on Constellations tab — keep nav in sync
   const navTab: TabId =
     tab === "paper" && act === 5 ? "constellations" : tab;
 
@@ -134,12 +152,7 @@ export default function HomePage() {
     <AppShell
       actLabel={actLabel}
       muted={muted}
-      onToggleMute={() => {
-        setMuted((m) => {
-          if (!m) setPlay(null);
-          return !m;
-        });
-      }}
+      onToggleMute={toggleMute}
       tab={navTab}
       onTab={goTab}
       onBack={canGoBack ? goBack : undefined}
@@ -150,9 +163,7 @@ export default function HomePage() {
           {act === 0 && (
             <Act0LastReceipt
               onRewind={() => setAct(1)}
-              onConstellations={() =>
-                goToJourney("m-last-receipt")
-              }
+              onConstellations={() => goToJourney("m-last-receipt")}
               onPlay={onPlay}
             />
           )}
@@ -180,7 +191,7 @@ export default function HomePage() {
                 setTab("paper");
                 setAct(0);
                 setFound(new Set());
-                setPlay(null);
+                clearPlay();
                 setSkyFocus(null);
               }}
               onPlay={onPlay}
@@ -207,7 +218,7 @@ export default function HomePage() {
         <SpotifyPlayer
           uri={play?.uri}
           open={!!play}
-          onClose={() => setPlay(null)}
+          onClose={clearPlay}
           title={play?.title}
           artist={play?.artist}
         />
